@@ -19,27 +19,17 @@ import java.util.Properties;
 public class VKCore {
 
     private static final Logger LOG = LoggerFactory.getLogger(VKCore.class);
-    private static final String DEFAULT_KEYBOARD;
+    private static String DEFAULT_KEYBOARD;
     private static int ts;
     private static int maxMsgId = -1;
-
-    static {
-        String keyboard = null;
-        try {
-            var fs = new FileInputStream("src/main/resources/keyboard.json");
-            keyboard = new String(fs.readAllBytes());
-        } catch (IOException e) {
-            LOG.error("Не удалось прочитать конфигурацию клавиатуры");
-            e.printStackTrace();
-        }
-        if (keyboard == null) DEFAULT_KEYBOARD = "{\"buttons\":[], \"one_time\":true}";
-        else DEFAULT_KEYBOARD = keyboard;
-    }
 
     private VkApiClient vk;
     private GroupActor actor;
 
     public VKCore() throws ClientException, ApiException {
+
+        keyboardInit();
+
         // Инициализация клиента для работы с вк
         TransportClient transportClient = HttpTransportClient.getInstance();
         vk = new VkApiClient(transportClient);
@@ -61,6 +51,19 @@ public class VKCore {
             e.printStackTrace();
             LOG.error("Ошибка при загрузке файла конфигурации");
         }
+    }
+
+    private void keyboardInit() {
+        String keyboard = null;
+        try {
+            var fs = new FileInputStream("src/main/resources/keyboard.json");
+            keyboard = new String(fs.readAllBytes());
+        } catch (IOException e) {
+            LOG.error("Не удалось прочитать конфигурацию клавиатуры");
+            e.printStackTrace();
+        }
+        if (keyboard == null) DEFAULT_KEYBOARD = "{\"buttons\":[], \"one_time\":true}";
+        else DEFAULT_KEYBOARD = keyboard;
     }
 
     public GroupActor getActor() {

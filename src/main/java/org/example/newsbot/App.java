@@ -24,7 +24,7 @@ public class App {
     public static ScheduleService scheduleService;
     public static VKCore vkCore;
 
-    static {
+    public static void main(String[] args) {
         LOG.error("Запуск сервисов...");
         newsService = new NewsService();
         userService = new UserService();
@@ -39,9 +39,7 @@ public class App {
             e.printStackTrace();
         }
         LOG.error("Готово");
-    }
 
-    public static void main(String[] args) {
         LOG.error("Запуск сервера обработки расписаний...");
         Executors.newCachedThreadPool().execute(new ScheduleServer());
         LOG.error("Готово");
