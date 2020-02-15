@@ -1,5 +1,7 @@
 package org.example.newsbot.models;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -17,14 +19,10 @@ public class News {
 
     private String head;
 
+    @Type(type = "text")
     private String content;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "news_tag",
-            joinColumns = @JoinColumn(name = "news_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
-    )
+    @ManyToMany(mappedBy = "news")
     private Set<Tag> tags = new HashSet<>();
 
     public News() {

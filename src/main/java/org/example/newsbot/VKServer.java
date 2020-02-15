@@ -5,11 +5,14 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.utils.Messenger;
 import org.example.newsbot.utils.VKCore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
 
 public class VKServer implements Runnable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(VKServer.class);
     private VKCore vkCore;
 
     VKServer(VKCore vkCore) {
@@ -30,9 +33,9 @@ public class VKServer implements Runnable {
                 }
 
             } catch (ClientException | InterruptedException | ApiException e) {
-                App.LOG.error("Возникли проблемы: " + e.getMessage());
+                LOG.error("Возникли проблемы: " + e.getMessage());
                 final int RECONNECT_TIME = 10000;
-                App.LOG.error("Повторное соединение через " + RECONNECT_TIME / 1000 + " секунд");
+                LOG.error("Повторное соединение через " + RECONNECT_TIME / 1000 + " секунд");
                 try {
                     Thread.sleep(RECONNECT_TIME);
                 } catch (InterruptedException ex) {

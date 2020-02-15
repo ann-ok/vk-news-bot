@@ -17,6 +17,7 @@ public class CommandManager {
         add(new UnsubscribeCommand("unsubscribe"));
         add(new ListCommand("list"));
         add(new HelpCommand("help"));
+        add(new ScheduleCommand("schedule"));
     }
 
     public static void add(Command command) {

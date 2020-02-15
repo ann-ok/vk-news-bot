@@ -1,40 +1,45 @@
-package org.example.newsbot.utils;
+package org.example.newsbot.utils.parsers;
 
 import org.example.newsbot.App;
 import org.example.newsbot.models.News;
 import org.example.newsbot.models.Tag;
+import org.example.newsbot.utils.HtmlToPlainText;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class Parser {
+public class ParserNews {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ParserNews.class);
     private static final int MAX_DAYS_TERM = 1;
 
     public static void initiate() throws IOException {
         var minDate = Timestamp.valueOf(LocalDateTime.now().minusDays(MAX_DAYS_TERM));
-        App.LOG.info("-= Парсинг новостей =-");
-        App.LOG.info("Подключение к сайту...");
+        LOG.info("-= Парсинг новостей =-");
+        LOG.info("Подключение к сайту...");
         mainLoop:
         for (int i = 1; i < 100; i++) {
-            App.LOG.info("Парсинг страницы " + i + "...");
+            LOG.info("Парсинг страницы " + i + "...");
             Document page = Jsoup.connect("https://progorod43.ru/articles?page=" + i)
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
                     .referrer("http://www.google.com")
                     .get();
-            App.LOG.info("Страница получена");
-            App.LOG.info("Выбор элементов...");
+            LOG.info("Страница получена");
+            LOG.info("Выбор элементов...");
             Elements listNews = page.select("div.article-list__item");
             for (Element element : listNews.select(".article-list__item-right")) {
                 // Дата публикации
                 var date = element.select(".article-list__item-date").text();
                 var timestamp = ParseTimestamp(date);
                 if (timestamp.before(minDate)) {
-                    App.LOG.info("Все новости за последние " + MAX_DAYS_TERM + " дней добавлены");
+                    LOG.info("Все новости за последние " + MAX_DAYS_TERM + " дней добавлены");
                     break mainLoop;
                 }
                 var title = element.select(".article-list__item-title");
@@ -66,7 +71,7 @@ public class Parser {
                     news.getTags().add(found);
                 }
             }
-            App.LOG.info("-= Готово =-");
+            LOG.info("-= Готово =-");
         }
     }
 

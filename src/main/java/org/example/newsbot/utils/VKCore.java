@@ -8,7 +8,8 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
-import org.example.newsbot.App;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +18,8 @@ import java.util.Properties;
 
 public class VKCore {
 
-    private static final String defaultKeyboard;
+    private static final Logger LOG = LoggerFactory.getLogger(VKCore.class);
+    private static final String DEFAULT_KEYBOARD;
     private static int ts;
     private static int maxMsgId = -1;
 
@@ -27,11 +29,11 @@ public class VKCore {
             var fs = new FileInputStream("src/main/resources/keyboard.json");
             keyboard = new String(fs.readAllBytes());
         } catch (IOException e) {
-            App.LOG.error("Не удалось прочитать конфигурацию клавиатуры");
+            LOG.error("Не удалось прочитать конфигурацию клавиатуры");
             e.printStackTrace();
         }
-        if (keyboard == null) defaultKeyboard = "{\"buttons\":[], \"one_time\":true}";
-        else defaultKeyboard = keyboard;
+        if (keyboard == null) DEFAULT_KEYBOARD = "{\"buttons\":[], \"one_time\":true}";
+        else DEFAULT_KEYBOARD = keyboard;
     }
 
     private VkApiClient vk;
@@ -57,7 +59,7 @@ public class VKCore {
                     .getTs();
         } catch (IOException e) {
             e.printStackTrace();
-            App.LOG.error("Ошибка при загрузке файла конфигурации");
+            LOG.error("Ошибка при загрузке файла конфигурации");
         }
     }
 
@@ -113,11 +115,11 @@ public class VKCore {
 
     public void sendMessage(String msg, int peerId, String inlineKeyboard) {
         if (msg == null) {
-            App.LOG.error("msg == null");
+            LOG.error("msg == null");
             return;
         }
         try {
-            App.LOG.info("Отправка сообщения пользователю " + peerId);
+            LOG.info("Отправка сообщения пользователю " + peerId);
             while (msg.length() > 4096) {
                 int i = 0;
                 while (true) {
@@ -129,7 +131,7 @@ public class VKCore {
                         .send(actor)
                         .peerId(peerId)
                         .message(msg.substring(0, i))
-                        .unsafeParam("keyboard", defaultKeyboard)
+                        .unsafeParam("keyboard", DEFAULT_KEYBOARD)
                         .execute();
                 msg = msg.substring(i + 1);
             }
@@ -146,7 +148,7 @@ public class VKCore {
                         .send(actor)
                         .peerId(peerId)
                         .message(msg)
-                        .unsafeParam("keyboard", defaultKeyboard)
+                        .unsafeParam("keyboard", DEFAULT_KEYBOARD)
                         .execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();

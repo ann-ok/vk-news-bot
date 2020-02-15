@@ -14,7 +14,11 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+            },
+            fetch = FetchType.EAGER)
     @JoinTable(
             name = "news_tag",
             joinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"),

@@ -2,11 +2,15 @@ package org.example.newsbot.utils;
 
 import org.example.newsbot.App;
 import org.example.newsbot.chat.notifications.NewsNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class NewsObserver {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NewsObserver.class);
     private Timestamp lastUpdate;
 
     public NewsObserver() {
@@ -24,7 +28,7 @@ public class NewsObserver {
 
     private void UsersNewsletter() {
         for (var user : App.userService.findAllUsers()) {
-            App.LOG.info("Рассылка новостей пользователю " + user.getId());
+            LOG.info("Рассылка новостей пользователю " + user.getId());
             if (user.isAllNews()) {
                 int count = 0;
                 for (var news : App.newsService.findAllNews()) {
@@ -33,7 +37,7 @@ public class NewsObserver {
                         count++;
                     }
                 }
-                App.LOG.info("Отправлено новостей: " + count);
+                LOG.info("Отправлено новостей: " + count);
             } else {
                 for (var tag : user.getTags()) {
                     for (var news : tag.getNews()) {
@@ -54,17 +58,17 @@ public class NewsObserver {
     }
 
     public void exec() {
-        App.LOG.info("--- Обновление новостей ---");
+        LOG.info("--- Обновление новостей ---");
 
-        App.LOG.info("Удаление старых новостей...");
+        LOG.info("Удаление старых новостей...");
         ClearPastNews();
-        App.LOG.info("Готово");
+        LOG.info("Готово");
 
-        App.LOG.info("Рассылка новых новостей...");
+        LOG.info("Рассылка новых новостей...");
         UsersNewsletter();
-        App.LOG.info("Готово");
+        LOG.info("Готово");
 
         setLastUpdate();
-        App.LOG.info("--- Завершено ---");
+        LOG.info("--- Завершено ---");
     }
 }
