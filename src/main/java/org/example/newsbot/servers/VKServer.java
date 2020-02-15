@@ -1,4 +1,4 @@
-package org.example.newsbot;
+package org.example.newsbot.servers;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -15,7 +15,7 @@ public class VKServer implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(VKServer.class);
     private VKCore vkCore;
 
-    VKServer(VKCore vkCore) {
+    public VKServer(VKCore vkCore) {
         this.vkCore = vkCore;
     }
 

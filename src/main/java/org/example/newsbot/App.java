@@ -2,6 +2,9 @@ package org.example.newsbot;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import org.example.newsbot.servers.NewsServer;
+import org.example.newsbot.servers.ScheduleServer;
+import org.example.newsbot.servers.VKServer;
 import org.example.newsbot.services.NewsService;
 import org.example.newsbot.services.ScheduleService;
 import org.example.newsbot.services.TagService;

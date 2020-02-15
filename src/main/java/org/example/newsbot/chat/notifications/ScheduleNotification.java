@@ -5,6 +5,7 @@ import org.example.newsbot.models.Schedule;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 
 public class ScheduleNotification implements Notification {
 
@@ -25,40 +26,53 @@ public class ScheduleNotification implements Notification {
     }
 
     private void getScheduleDay(StringBuilder sb) {
-        sb.append("Расписание на ").append(new SimpleDateFormat("dd.MM").format(date)).append(":\n");
+        sb.append("&#128203; ")
+                .append(getWeekDay(this.date))
+                .append(" ")
+                .append(new SimpleDateFormat("dd.MM").format(date))
+                .append("\n------------------------------------------\n");
         var schedule = App.scheduleService.findByDate(this.date);
-        getDayClasses(sb, schedule);
+        sb.append(schedule.getSchedule());
+        sb.append("------------------------------------------\n");
     }
 
     private void getScheduleAll(StringBuilder sb) {
-        var schedules = App.scheduleService.findAllSchedules();
+        var allSchedules = App.scheduleService.findAllSchedules();
+        allSchedules.sort(Comparator.comparing(Schedule::getDate));
+        var schedules = allSchedules.subList(allSchedules.size() - 14, allSchedules.size());
         for (var schedule : schedules) {
             var sbDay = new StringBuilder();
-            sbDay
-                    .append(new SimpleDateFormat("EEEE").format(schedule.getDate()))
+            sbDay.append("\n&#128203; ")
+                    .append(getWeekDay(schedule.getDate()))
                     .append(" ")
-                    .append(new SimpleDateFormat("dd.MM").format(schedule.getDate())).append(":\n");
-            if (!getDayClasses(sbDay, schedule)) sb.append(sbDay).append("\n");
+                    .append(new SimpleDateFormat("dd.MM").format(schedule.getDate()))
+                    .append("\n------------------------------------------\n");
+            var data = schedule.getSchedule();
+            if (data.contains("В этот день пар нет.") || data.contains("УЧЕБНАЯ ПРАКТИКА")) continue;
+            sbDay.append(data);
+            sb.append(sbDay).append("------------------------------------------\n");
         }
     }
 
-    private boolean getDayClasses(StringBuilder sb, Schedule schedule) {
-        var pairs = schedule.getSchedule().split("\n \n");
-        var emptyDay = true;
-        for (var pair : pairs) {
-            if (!pair
-                    .substring(11)
-                    .trim()
-                    .replaceAll(" ", "")
-                    .equals("")) {
-                emptyDay = false;
-                if (pair.charAt(11) == '\n') pair = pair.replaceFirst("\n", " ");
-                sb.append("&#9200; ").append(pair).append('\n');
-            }
+    private String getWeekDay(Timestamp date) {
+        var dayName = new SimpleDateFormat("EEEE").format(date);
+        switch (dayName) {
+            case "Monday":
+                return "Понедельник";
+            case "Tuesday":
+                return "Вторник";
+            case "Wednesday":
+                return "Среда";
+            case "Thursday":
+                return "Четверг";
+            case "Friday":
+                return "Пятница";
+            case "Saturday":
+                return "Суббота";
+            case "Sunday":
+                return "Воскресенье";
+            default:
+                return dayName;
         }
-        if (emptyDay) {
-            sb.append("В этот день пар нет.");
-        }
-        return emptyDay;
     }
 }

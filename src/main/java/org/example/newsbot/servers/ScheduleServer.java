@@ -1,4 +1,4 @@
-package org.example.newsbot;
+package org.example.newsbot.servers;
 
 import org.example.newsbot.utils.parsers.ParserSchedules;
 import org.slf4j.Logger;

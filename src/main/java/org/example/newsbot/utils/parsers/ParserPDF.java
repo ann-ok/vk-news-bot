@@ -55,12 +55,69 @@ public class ParserPDF {
             var date = getDateFromHead(head);
 
             day = day.substring(l + 1);
-            App.scheduleService.saveSchedule(new Schedule(date, groupName, day));
+            var sb = new StringBuilder();
+            getDayClasses(sb, day);
+            App.scheduleService.saveSchedule(new Schedule(date, groupName, sb.toString()));
         }
     }
 
     private static Timestamp getDateFromHead(String head) {
         var nums = head.split(" ")[1].split("\\.");
         return Timestamp.valueOf(String.format("20%s-%s-%s 12:00:00", nums[2], nums[1], nums[0]));
+    }
+
+    private static boolean getDayClasses(StringBuilder sb, String schedule) {
+        var pairs = schedule
+                .replaceAll("[_*]", "")
+                .replaceAll("ФИб-3301-51-00, 0. подгруппа ", "")
+                .split("\n \n");
+        var emptyDay = true;
+        for (var pair : pairs) {
+            if (!pair
+                    .substring(11)
+                    .trim()
+                    .replaceAll(" ", "")
+                    .equals("")) {
+                emptyDay = false;
+
+                pair = pair.replaceAll("\n", " ").replaceAll("  ", " ");
+
+                var icon = "";
+                if (pair.contains("Лабораторная работа")) {
+                    pair = pair.replaceAll("Лабораторная работа ", "\n&#128104; ");
+                    icon = "&#128736;";
+                } else if (pair.contains("Лекция")) {
+                    pair = pair.replaceAll("Лекция ", "\n&#128104; ");
+                    icon = "&#128221;";
+                } else if (pair.contains("Практическое занятие")) {
+                    pair = pair.replaceAll("Практическое занятие ", "\n&#128104; ");
+                    icon = "&#128736;";
+                }
+                pair = icon + " " + pair.substring(0, 12) + "\n" + pair.substring(11);
+
+                if (pair.charAt(11) == '\n') pair = pair.replaceFirst("\n", " ");
+
+                var index = pair.indexOf("Физическая культура и спорт");
+                if (index != -1) pair = pair.substring(0, index + 1) + pair.substring(index + 1)
+                        .replaceAll("Физическая культура и спорт.", "");
+                index = pair.lastIndexOf('.');
+                if (index != -1) pair = pair.substring(0, index + 1) + "\n&#127979;" + pair.substring(index + 1);
+                index = pair.indexOf("&#128104;");
+                if (index != -1) {
+                    pair = pair.substring(0, index).toUpperCase() + pair.substring(index);
+                } else {
+                    pair = pair.toUpperCase();
+                }
+
+                sb.append(pair.replaceAll("\n\n", "\n").replaceAll("-", " - "))
+                        .append("\n\n");
+            }
+        }
+        if (emptyDay) {
+            sb.append("В этот день пар нет.\n");
+        } else {
+            sb.replace(sb.length() - 1, sb.length(), "");
+        }
+        return emptyDay;
     }
 }

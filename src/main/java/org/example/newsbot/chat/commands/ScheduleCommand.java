@@ -33,16 +33,17 @@ public class ScheduleCommand extends Command {
 
     @Override
     public void exec(Message message) {
+        var msg = message.getBody().toLowerCase();
         var df = new SimpleDateFormat("'2020'-MM-dd '12:00:00'");
         String date = null;
-        if (message.getBody().contains("сегодня")) {
+        if (msg.contains("сегодня")) {
             date = df.format(new Timestamp(System.currentTimeMillis()));
-        } else if (message.getBody().contains("послезавтра")) {
+        } else if (msg.contains("послезавтра")) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date());
             c.add(Calendar.DATE, 2);
             date = df.format(c.getTime());
-        } else if (message.getBody().contains("завтра")) {
+        } else if (msg.contains("завтра")) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date());
             c.add(Calendar.DATE, 1);
