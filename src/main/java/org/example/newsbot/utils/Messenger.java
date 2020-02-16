@@ -124,7 +124,6 @@ public class Messenger {
                         .peerId(peerId)
                         .randomId(getRandomId())
                         .message(msg)
-                        //.unsafeParam("keyboard", defaultKeyboard)
                         .unsafeParam("keyboard", inlineKeyboard)
                         .execute();
             else

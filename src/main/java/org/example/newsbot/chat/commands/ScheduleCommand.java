@@ -2,6 +2,7 @@ package org.example.newsbot.chat.commands;
 
 import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.chat.notifications.ScheduleNotification;
+import org.example.newsbot.chat.notifications.ScheduleNowNotification;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,8 @@ public class ScheduleCommand extends Command {
                 "сегодня",
                 "завтра",
                 "послезавтра",
-                "расписание"
+                "расписание",
+                "сейчас"
         };
         for (var word : message.toLowerCase()
                 .replaceAll("[,.]", "")
@@ -48,6 +50,10 @@ public class ScheduleCommand extends Command {
             c.setTime(new Date());
             c.add(Calendar.DATE, 1);
             date = df.format(c.getTime());
+        } else if (msg.contains("сейчас")) {
+            date = df.format(new Timestamp(System.currentTimeMillis()));
+            new ScheduleNowNotification(Timestamp.valueOf(date)).exec(message.getFromId());
+            return;
         }
         if (date == null) {
             new ScheduleNotification(null).exec(message.getFromId());
