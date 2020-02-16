@@ -5,23 +5,11 @@
       {
         "action": {
           "type": "text",
-          "payload": "{\"button\": \"1\"}",
-          "label": "Помощь"
-        },
-        "color": "primary"
-      }
-    ],
-    [
-      {
-        "action": {
-          "type": "text",
           "payload": "{\"button\": \"2\"}",
           "label": "Список тегов"
         },
         "color": "primary"
-      }
-    ],
-    [
+      },
       {
         "action": {
           "type": "text",
@@ -37,6 +25,50 @@
           "label": "Отписаться"
         },
         "color": "negative"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "text",
+          "payload": "{\"button\": \"5\"}",
+          "label": "Сегодня"
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "text",
+          "payload": "{\"button\": \"6\"}",
+          "label": "Завтра"
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "text",
+          "payload": "{\"button\": \"7\"}",
+          "label": "Послезавтра"
+        },
+        "color": "primary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "text",
+          "payload": "{\"button\": \"8\"}",
+          "label": "Расписание"
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "text",
+          "payload": "{\"button\": \"1\"}",
+          "label": "Помощь"
+        },
+        "color": "primary"
       }
     ]
   ]

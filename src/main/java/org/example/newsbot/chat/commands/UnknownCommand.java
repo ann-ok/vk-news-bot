@@ -1,7 +1,7 @@
 package org.example.newsbot.chat.commands;
 
 import com.vk.api.sdk.objects.messages.Message;
-import org.example.newsbot.App;
+import org.example.newsbot.utils.Messenger;
 
 public class UnknownCommand extends Command {
 
@@ -15,8 +15,8 @@ public class UnknownCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        var msg = emptyBody(message.getBody()) ? "Неизвестная команда" : message.getBody();
+        var msg = emptyBody(message.getText()) ? "Неизвестная команда" : message.getText();
         msg += "\n\n(Для справки напишите \"Помощь\")";
-        App.vkCore.sendMessage(msg, message.getUserId());
+        Messenger.sendMessage(msg, message.getFromId());
     }
 }

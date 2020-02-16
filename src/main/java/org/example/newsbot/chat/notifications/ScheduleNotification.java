@@ -2,6 +2,7 @@ package org.example.newsbot.chat.notifications;
 
 import org.example.newsbot.App;
 import org.example.newsbot.models.Schedule;
+import org.example.newsbot.utils.Messenger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,7 @@ import java.util.Comparator;
 
 public class ScheduleNotification implements Notification {
 
-    private Timestamp date;
+    private final Timestamp date;
 
     public ScheduleNotification(Timestamp date) {
         this.date = date;
@@ -22,7 +23,7 @@ public class ScheduleNotification implements Notification {
         var sb = new StringBuilder();
         if (date == null) getScheduleAll(sb);
         else getScheduleDay(sb);
-        App.vkCore.sendMessage(sb.toString(), userId);
+        Messenger.sendMessage(sb.toString(), userId);
     }
 
     private void getScheduleDay(StringBuilder sb) {

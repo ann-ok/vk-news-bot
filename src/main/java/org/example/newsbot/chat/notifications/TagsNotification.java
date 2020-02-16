@@ -1,6 +1,7 @@
 package org.example.newsbot.chat.notifications;
 
 import org.example.newsbot.App;
+import org.example.newsbot.utils.Messenger;
 
 public class TagsNotification implements Notification {
     @Override
@@ -16,6 +17,6 @@ public class TagsNotification implements Notification {
                 sb.append(tag.getName()).append(", ");
             sb.replace(sb.lastIndexOf(","), sb.length(), "");
         }
-        App.vkCore.sendMessage(sb.toString(), userId);
+        Messenger.sendMessage(sb.toString(), userId);
     }
 }

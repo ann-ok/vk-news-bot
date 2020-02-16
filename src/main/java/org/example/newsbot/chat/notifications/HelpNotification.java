@@ -1,6 +1,6 @@
 package org.example.newsbot.chat.notifications;
 
-import org.example.newsbot.App;
+import org.example.newsbot.utils.Messenger;
 
 public class HelpNotification implements Notification {
     @Override
@@ -15,6 +15,6 @@ public class HelpNotification implements Notification {
                 "\n[Отписаться] - отписывает вас от определенного тега или списка тегов, заданных через пробел. " +
                 "Для отписки от тега, состоящего из нескольких слов, напишите его в двойных кавычках. " +
                 "Отсутвие тегов после ключевого слова отписывает вас от всех сразу;\n";
-        App.vkCore.sendMessage(msg, userId);
+        Messenger.sendMessage(msg, userId);
     }
 }

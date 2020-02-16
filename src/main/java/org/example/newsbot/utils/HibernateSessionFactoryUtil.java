@@ -53,7 +53,8 @@ public class HibernateSessionFactoryUtil {
             LOG.debug("Транзакция заверешна");
             condition.signalAll();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error("Прервано ожидание сессии: ");
+            LOG.error(e.getMessage());
         } finally {
             locker.unlock();
         }

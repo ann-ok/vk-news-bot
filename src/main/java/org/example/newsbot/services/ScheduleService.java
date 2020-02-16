@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class ScheduleService {
-    private ScheduleDao scheduleDao = new ScheduleDao();
+    private final ScheduleDao scheduleDao = new ScheduleDao();
 
     public ScheduleService() {
     }

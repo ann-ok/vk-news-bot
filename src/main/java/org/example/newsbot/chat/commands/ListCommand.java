@@ -3,6 +3,7 @@ package org.example.newsbot.chat.commands;
 import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.App;
 import org.example.newsbot.chat.notifications.TagsNotification;
+import org.example.newsbot.utils.Messenger;
 
 public class ListCommand extends Command {
 
@@ -17,8 +18,8 @@ public class ListCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        var user = App.userService.getUser(message.getUserId());
-        new TagsNotification().exec(message.getUserId());
+        var user = App.userService.getUser(message.getFromId());
+        new TagsNotification().exec(message.getFromId());
         var sb = new StringBuilder();
         var tags = App.tagService.findAllTags();
         for (var tag : tags) {
@@ -27,29 +28,6 @@ public class ListCommand extends Command {
             }
         }
         sb.replace(sb.lastIndexOf(","), sb.length(), "");
-        App.vkCore.sendMessage("Доступные для подписки теги:\n" + sb.toString(), message.getUserId());
+        Messenger.sendMessage("Доступные для подписки теги:\n" + sb.toString(), message.getFromId());
     }
 }
-
-/*
-* String keyboard = "{\"inline\": true , \"buttons\": [[";
-        var count = 0;
-        for (var tag : tags) {
-            count++;
-            if (count > 10) break;
-            keyboard += "{\"action\": {\"type\": \"text\", \"payload\": \"{\\\"button\\\": \\\""
-                    + count + "\\\"}\",\"label\": \""
-                    + tag.getName() + "\"},\"color\": \"primary\"}";
-            if (count % 5 == 0) {
-                keyboard += "],[";
-            } else {
-                keyboard += ",";
-            }
-//            if (user.isAllNews() || !user.getTags().contains(tag))
-//                sb.append(tag.getName()).append(", ");
-        }
-        keyboard = keyboard.substring(0, keyboard.length() - 4);
-        keyboard += "}]]}";
-        //sb.replace(sb.lastIndexOf(","), sb.length(), "");
-        App.vkCore.sendMessage("Доступные для подписки теги:\n" + sb.toString(), message.getUserId(), keyboard);
-*/

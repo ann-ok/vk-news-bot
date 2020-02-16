@@ -4,11 +4,10 @@ import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.chat.BeforeCommand;
 import org.example.newsbot.chat.commands.*;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 public class CommandManager {
-    private static HashSet<Command> commands = new HashSet<>();
+    private static final HashSet<Command> commands = new HashSet<>();
 
     static {
         add(new UnknownCommand("unknown"));
@@ -30,13 +29,13 @@ public class CommandManager {
      * @param message сообщение (запрос) пользователя
      */
     static void execute(Message message) {
-        getCommand(commands, message).exec(message);
+        getCommand(message).exec(message);
     }
 
-    static Command getCommand(Collection<Command> commands, Message message) {
+    static Command getCommand(Message message) {
         BeforeCommand.exec(message);
-        String body = message.getBody();
-        for (Command command : commands) {
+        String body = message.getText();
+        for (Command command : CommandManager.commands) {
             if (command.check(body)) return command;
         }
         return new UnknownCommand("unknown");

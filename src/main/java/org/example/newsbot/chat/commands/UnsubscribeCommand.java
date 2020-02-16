@@ -2,6 +2,7 @@ package org.example.newsbot.chat.commands;
 
 import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.App;
+import org.example.newsbot.utils.Messenger;
 
 public class UnsubscribeCommand extends Command {
 
@@ -16,15 +17,16 @@ public class UnsubscribeCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        var user = App.userService.getUser(message.getUserId());
+        var user = App.userService.getUser(message.getFromId());
         user.setAllNews(false);
-        var tags = SubscribeCommand.getTags(message.getBody().replace("отписаться", "").trim());
+        var tags = SubscribeCommand.getTags(message.getText()
+                .replace("отписаться", "").trim());
         if (tags.size() == 0) user.getTags().clear();
         for (String s : tags) {
             var tag = App.tagService.findTagInsensitive(s);
             if (tag != null) user.getTags().remove(tag);
         }
         App.userService.updateUser(user);
-        App.vkCore.sendMessage("Ваши подписки успешно обновлены", message.getUserId());
+        Messenger.sendMessage("Ваши подписки успешно обновлены", message.getFromId());
     }
 }

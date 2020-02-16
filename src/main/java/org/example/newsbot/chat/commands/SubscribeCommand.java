@@ -3,6 +3,7 @@ package org.example.newsbot.chat.commands;
 import com.vk.api.sdk.objects.messages.Message;
 import org.example.newsbot.App;
 import org.example.newsbot.chat.notifications.TagsNotification;
+import org.example.newsbot.utils.Messenger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,12 +40,12 @@ public class SubscribeCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        var user = App.userService.getUser(message.getUserId());
+        var user = App.userService.getUser(message.getFromId());
         if (user.isAllNews()) {
             new TagsNotification().exec(user.getId());
             return;
         }
-        var tags = getTags(message.getBody()
+        var tags = getTags(message.getText()
                 .toLowerCase()
                 .replace("подписаться", "")
                 .trim());
@@ -54,6 +55,6 @@ public class SubscribeCommand extends Command {
             if (tag != null) user.getTags().add(tag);
         }
         App.userService.updateUser(user);
-        App.vkCore.sendMessage("Ваши подписки успешно обновлены", message.getUserId());
+        Messenger.sendMessage("Ваши подписки успешно обновлены", message.getFromId());
     }
 }

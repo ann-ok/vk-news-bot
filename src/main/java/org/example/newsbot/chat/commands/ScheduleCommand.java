@@ -33,7 +33,7 @@ public class ScheduleCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        var msg = message.getBody().toLowerCase();
+        var msg = message.getText().toLowerCase();
         var df = new SimpleDateFormat("'2020'-MM-dd '12:00:00'");
         String date = null;
         if (msg.contains("сегодня")) {
@@ -50,9 +50,9 @@ public class ScheduleCommand extends Command {
             date = df.format(c.getTime());
         }
         if (date == null) {
-            new ScheduleNotification(null).exec(message.getUserId());
+            new ScheduleNotification(null).exec(message.getFromId());
         } else {
-            new ScheduleNotification(Timestamp.valueOf(date)).exec(message.getUserId());
+            new ScheduleNotification(Timestamp.valueOf(date)).exec(message.getFromId());
         }
     }
 }

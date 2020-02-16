@@ -6,7 +6,7 @@ import org.example.newsbot.models.User;
 import java.util.List;
 
 public class UserService {
-    private UserDao userDao = new UserDao();
+    private final UserDao userDao = new UserDao();
 
     public UserService() {
     }

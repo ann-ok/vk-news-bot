@@ -1,15 +1,12 @@
 package org.example.newsbot;
 
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
 import org.example.newsbot.servers.NewsServer;
 import org.example.newsbot.servers.ScheduleServer;
-import org.example.newsbot.servers.VKServer;
+import org.example.newsbot.servers.VkServer;
 import org.example.newsbot.services.NewsService;
 import org.example.newsbot.services.ScheduleService;
 import org.example.newsbot.services.TagService;
 import org.example.newsbot.services.UserService;
-import org.example.newsbot.utils.VKCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +19,6 @@ public class App {
     public static UserService userService;
     public static TagService tagService;
     public static ScheduleService scheduleService;
-    public static VKCore vkCore;
 
     public static void main(String[] args) {
         LOG.error("Запуск сервисов...");
@@ -30,14 +26,6 @@ public class App {
         userService = new UserService();
         tagService = new TagService();
         scheduleService = new ScheduleService();
-        LOG.error("Готово");
-
-        try {
-            LOG.error("Инициализация клиента для работы с ВКонтакте...");
-            vkCore = new VKCore();
-        } catch (ApiException | ClientException e) {
-            e.printStackTrace();
-        }
         LOG.error("Готово");
 
         LOG.error("Запуск сервера обработки расписаний...");
@@ -49,7 +37,7 @@ public class App {
         LOG.error("Готово");
 
         LOG.error("Запуск сервера работы с ВКонтакте...");
-        Executors.newCachedThreadPool().execute(new VKServer(vkCore));
+        Executors.newCachedThreadPool().execute(new VkServer());
         LOG.error("Готово");
     }
 }

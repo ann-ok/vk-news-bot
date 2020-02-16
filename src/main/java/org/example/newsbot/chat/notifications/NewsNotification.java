@@ -2,12 +2,13 @@ package org.example.newsbot.chat.notifications;
 
 import org.example.newsbot.App;
 import org.example.newsbot.models.News;
+import org.example.newsbot.utils.Messenger;
 
 import java.text.SimpleDateFormat;
 
 public class NewsNotification implements Notification {
 
-    private News news;
+    private final News news;
 
     public NewsNotification(News news) {
         this.news = news;
@@ -23,6 +24,6 @@ public class NewsNotification implements Notification {
                 + news.getHead().toUpperCase()
                 + "\n"
                 + news.getContent();
-        App.vkCore.sendMessage(msg, userId);
+        Messenger.sendMessage(msg, userId);
     }
 }

@@ -6,7 +6,7 @@ import org.example.newsbot.models.Tag;
 import java.util.List;
 
 public class TagService {
-    private TagDao tagDao = new TagDao();
+    private final TagDao tagDao = new TagDao();
 
     public TagService() {
     }

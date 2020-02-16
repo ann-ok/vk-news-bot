@@ -9,6 +9,7 @@ public class ScheduleServer implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ScheduleServer.class);
     private static final int PAUSE_DAYS = 1;
 
+    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void run() {
         while (true) {

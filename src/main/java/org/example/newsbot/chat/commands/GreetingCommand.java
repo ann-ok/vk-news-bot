@@ -1,7 +1,7 @@
 package org.example.newsbot.chat.commands;
 
 import com.vk.api.sdk.objects.messages.Message;
-import org.example.newsbot.App;
+import org.example.newsbot.utils.Messenger;
 
 public class GreetingCommand extends Command {
 
@@ -34,6 +34,6 @@ public class GreetingCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        App.vkCore.sendMessage("Привет, " + message.getUserId(), message.getUserId());
+        Messenger.sendMessage("Привет, " + message.getFromId(), message.getFromId());
     }
 }

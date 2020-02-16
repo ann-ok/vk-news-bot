@@ -29,6 +29,6 @@ public class HelpCommand extends Command {
 
     @Override
     public void exec(Message message) {
-        new HelpNotification().exec(message.getUserId());
+        new HelpNotification().exec(message.getFromId());
     }
 }

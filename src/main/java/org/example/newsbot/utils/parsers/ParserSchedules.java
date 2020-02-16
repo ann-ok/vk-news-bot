@@ -41,6 +41,7 @@ public class ParserSchedules {
         LOG.info("Страница получена");
 
         LOG.info("Выбор элементов...");
+        assert doc != null;
         var weeks = doc.select("#listPeriod_131732").select("a");
 
         LOG.info("Обработка...");
@@ -81,6 +82,7 @@ public class ParserSchedules {
         }
 
         File tempPdf = null;
+        assert url != null;
         try (InputStream in = url.openStream()) {
             tempPdf = File.createTempFile("temp-schedule-", ".pdf");
             Files.copy(in, Paths.get(tempPdf.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);

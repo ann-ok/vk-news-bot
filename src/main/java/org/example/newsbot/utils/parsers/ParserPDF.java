@@ -7,13 +7,14 @@ import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import org.example.newsbot.App;
 import org.example.newsbot.models.Schedule;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class ParserPDF {
     public static void parse(String pdf) throws IOException {
-        PdfReader reader = new PdfReader(pdf);
+        PdfReader reader = new PdfReader(new FileInputStream(pdf));
         PdfReaderContentParser parser = new PdfReaderContentParser(reader);
         TextExtractionStrategy strategy;
         StringBuilder textSB = new StringBuilder();
@@ -66,7 +67,7 @@ public class ParserPDF {
         return Timestamp.valueOf(String.format("20%s-%s-%s 12:00:00", nums[2], nums[1], nums[0]));
     }
 
-    private static boolean getDayClasses(StringBuilder sb, String schedule) {
+    private static void getDayClasses(StringBuilder sb, String schedule) {
         var pairs = schedule
                 .replaceAll("[_*]", "")
                 .replaceAll("ФИб-3301-51-00, 0. подгруппа ", "")
@@ -80,7 +81,7 @@ public class ParserPDF {
                     .equals("")) {
                 emptyDay = false;
 
-                pair = pair.replaceAll("\n", " ").replaceAll("  ", " ");
+                pair = pair.replaceAll("\n", " ").replaceAll(" {2}", " ");
 
                 var icon = "";
                 if (pair.contains("Лабораторная работа")) {
@@ -118,6 +119,5 @@ public class ParserPDF {
         } else {
             sb.replace(sb.length() - 1, sb.length(), "");
         }
-        return emptyDay;
     }
 }

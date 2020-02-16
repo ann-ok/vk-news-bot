@@ -6,7 +6,7 @@ import org.example.newsbot.models.News;
 import java.util.List;
 
 public class NewsService {
-    private NewsDao newsDao = new NewsDao();
+    private final NewsDao newsDao = new NewsDao();
 
     public NewsService() {
     }

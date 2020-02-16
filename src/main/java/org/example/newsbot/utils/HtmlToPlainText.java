@@ -37,8 +37,8 @@ public class HtmlToPlainText {
     // the formatting rules, implemented in a breadth-first DOM traverse
     private static class FormattingVisitor implements NodeVisitor {
         private static final int maxWidth = 80;
+        private final StringBuilder accum = new StringBuilder(); // holds the accumulated text
         private int width = 0;
-        private StringBuilder accum = new StringBuilder(); // holds the accumulated text
 
         // hit when the node is first seen
         public void head(Node node, int depth) {

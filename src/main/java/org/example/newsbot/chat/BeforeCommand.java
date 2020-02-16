@@ -6,10 +6,10 @@ import org.example.newsbot.models.User;
 
 public class BeforeCommand {
     public static void exec(Message message) {
-        var user = App.userService.getUser(message.getUserId());
+        var user = App.userService.getUser(message.getFromId());
 
         if (user == null) {
-            var newUser = new User(message.getUserId());
+            var newUser = new User(message.getFromId());
             App.userService.saveUser(newUser);
         }
     }
