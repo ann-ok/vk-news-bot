@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="VKNewsBot" />
+        <module name="vk-news-bot" />
       </profile>
     </annotationProcessing>
   </component>
