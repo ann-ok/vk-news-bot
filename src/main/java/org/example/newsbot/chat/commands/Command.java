@@ -2,14 +2,13 @@ package org.example.newsbot.chat.commands;
 
 import com.vk.api.sdk.objects.messages.Message;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Command {
 
     private final String name;
 
-    Command(String name) { this.name = name; }
+    Command(String name) {
+        this.name = name;
+    }
 
     /**
      * Метод, который будет вызываться для исполнения команды
