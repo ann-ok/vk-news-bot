@@ -24,6 +24,12 @@ public class User {
     @Column(name = "all_news")
     private boolean allNews;
 
+    @Column(name = "is_remind")
+    private boolean isRemind;
+
+    @Column(name = "remind_interval")
+    private int remindInterval;
+
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_tag",
@@ -83,5 +89,21 @@ public class User {
 
     public void setAllNews(boolean allNews) {
         this.allNews = allNews;
+    }
+
+    public boolean isRemind() {
+        return isRemind;
+    }
+
+    public void setRemind(boolean remind) {
+        isRemind = remind;
+    }
+
+    public int getRemindInterval() {
+        return remindInterval;
+    }
+
+    public void setRemindInterval(int remindInterval) {
+        this.remindInterval = remindInterval;
     }
 }

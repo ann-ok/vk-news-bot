@@ -21,7 +21,10 @@ public class GreetingCommand extends Command {
                 "hi",
                 "здарова",
                 "ку",
-                "qq"
+                "qq",
+                "q",
+                "приветики",
+                "приветули"
         };
         for (var word : message.toLowerCase()
                 .replaceAll("[,.]", "")

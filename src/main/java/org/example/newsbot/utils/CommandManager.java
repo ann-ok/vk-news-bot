@@ -17,6 +17,8 @@ public class CommandManager {
         add(new ListCommand("list"));
         add(new HelpCommand("help"));
         add(new ScheduleCommand("schedule"));
+        add(new TeacherCommand("teacher"));
+        add(new RemindCommand("remind"));
     }
 
     public static void add(Command command) {
